@@ -1,31 +1,29 @@
+// src/components/PostCard.jsx
 import React from "react";
 
 function PostCard({ post }) {
   return (
-    <div style={{ border: "1px solid #ccc", padding: "16px", marginBottom: "16px" }}>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <p style={{ fontSize: "12px", color: "gray" }}>
+    <div className="border border-gray-300 m-4 p-4">
+      <div className="flex justify-between items-center mb-4">
+        <p className="text-sm text-gray-500">
           {new Date(post.createdAt).toLocaleDateString()}
         </p>
-        <div>
-          {post.categories.map((category) => (
+        <div className="flex gap-2">
+          {post.categories.map((cat, index) => (
             <span
-              key={category}
-              style={{
-                fontSize: "12px",
-                marginLeft: "8px",
-                color: "blue",
-                border: "1px solid blue",
-                padding: "2px 6px",
-              }}
+              key={index}
+              className="px-3 py-1 text-sm border border-blue-500 text-blue-600 rounded"
             >
-              {category}
+              {cat}
             </span>
           ))}
         </div>
       </div>
-      <h2>{post.title}</h2>
-      <div dangerouslySetInnerHTML={{ __html: post.content }} />
+      <h2 className="text-xl font-bold">{post.title}</h2>
+      <div
+        className="mt-2 text-gray-700 line-clamp-2"
+        dangerouslySetInnerHTML={{ __html: post.content }}
+      />
     </div>
   );
 }
