@@ -1,13 +1,28 @@
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { posts } from "../data/posts";
 
 export default function PostDetail() {
   const { id } = useParams();
-  const post = posts.find((post) => post.id === Number(id));
+  const [post, setPost] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  if (!post) {
-    return <p className="text-red-600">記事が見つかりません</p>;
-  }
+  useEffect(() => {
+    const fetcher = async () => {
+      try {
+        const res = await fetch(`https://1hmfpsvto6.execute-api.ap-northeast-1.amazonaws.com/dev/posts/${id}`);
+        const data = await res.json();
+        setPost(data.post);
+      } catch (error) {
+        console.error("記事の取得に失敗しました", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetcher();
+  }, [id]);
+
+  if (loading) return <p className="p-6 text-gray-500">読み込み中...</p>;
+  if (!post) return <p className="text-red-600">記事が見つかりません</p>;
 
   return (
     <article className="max-w-3x1 mx-auto p-6">
